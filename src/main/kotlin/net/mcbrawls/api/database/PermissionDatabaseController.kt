@@ -1,8 +1,6 @@
 package net.mcbrawls.api.database
 
-import com.mojang.serialization.Codec
 import com.mojang.serialization.JsonOps
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import net.mcbrawls.api.file
 import net.mcbrawls.api.runAsync
 import net.mcbrawls.api.toJson
@@ -12,9 +10,9 @@ import java.sql.Connection
 import kotlin.concurrent.thread
 
 /**
- * Manages the remote Brawls MySQL database.
+ * Manages the remote LuckPerms MySQL database.
  */
-object DatabaseController : DatabaseExecutable {
+object PermissionDatabaseController : DatabaseExecutable {
     private val logger: Logger = LoggerFactory.getLogger("Database Controller")
 
     private const val DATABASE_CONFIG_PATH = "database_config.json"
@@ -24,7 +22,7 @@ object DatabaseController : DatabaseExecutable {
     init {
         runAsync { connect() }
 
-        thread(name = "Brawls Database Heartbeat") {
+        thread(name = "LuckPerms Database Heartbeat") {
             // start heartbeat
             runAsync {
                 while (true) {
@@ -60,10 +58,10 @@ object DatabaseController : DatabaseExecutable {
         val file = file(DATABASE_CONFIG_PATH)
         try {
             val json = file.toJson()
-            val connectionInfo = ConnectionInfo.CODEC.decode(JsonOps.INSTANCE, json).result().orElseThrow().first
+            val connectionInfo = DatabaseController.ConnectionInfo.CODEC.decode(JsonOps.INSTANCE, json).result().orElseThrow().first
             return AuthenticatableDatabase(
                 connectionInfo.address,
-                connectionInfo.database,
+                connectionInfo.permissionDatabase,
                 "mysql",
                 connectionInfo.user,
                 connectionInfo.password
@@ -90,31 +88,5 @@ object DatabaseController : DatabaseExecutable {
      */
     fun disconnect(): Boolean? {
         return database.disconnect()
-    }
-
-    /**
-     * The information of a database connection.
-     */
-    data class ConnectionInfo(
-        val address: String,
-        val database: String,
-        val user: String,
-        val password: String,
-        val permissionDatabase: String,
-    ) {
-        companion object {
-            /**
-             * The codec for connection information.
-             */
-            val CODEC: Codec<ConnectionInfo> = RecordCodecBuilder.create { instance ->
-                instance.group(
-                    Codec.STRING.fieldOf("address").forGetter(ConnectionInfo::address),
-                    Codec.STRING.fieldOf("database").forGetter(ConnectionInfo::database),
-                    Codec.STRING.fieldOf("user").forGetter(ConnectionInfo::user),
-                    Codec.STRING.fieldOf("password").forGetter(ConnectionInfo::password),
-                    Codec.STRING.fieldOf("permissionDatabase").forGetter(ConnectionInfo::permissionDatabase)
-                ).apply(instance, DatabaseController::ConnectionInfo)
-            }
-        }
     }
 }

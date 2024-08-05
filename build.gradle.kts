@@ -3,11 +3,10 @@
 plugins {
     kotlin("jvm") version "2.0.0"
     `maven-publish`
-    application
 }
 
 group = "net.mcbrawls"
-version = "1.2.4"
+version = project.findProperty("version") as String
 
 repositories {
     mavenCentral()
@@ -25,6 +24,7 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("io.ktor:ktor-server-auth:$ktor_version")
+    implementation("io.github.smiley4:ktor-swagger-ui:3.2.0")
 
     implementation("com.mysql:mysql-connector-j:8.3.0")
     implementation("org.slf4j:slf4j-simple:2.0.12")
@@ -68,10 +68,6 @@ val fatJar = task("fatJar", type = Jar::class) {
     }
 
     with(tasks["jar"] as CopySpec)
-}
-
-application {
-    mainClass = "net.mcbrawls.api.MainKt"
 }
 
 publishing {
