@@ -112,7 +112,7 @@ object DatabaseController : DatabaseExecutable {
                     Codec.STRING.fieldOf("database").forGetter(ConnectionInfo::database),
                     Codec.STRING.fieldOf("user").forGetter(ConnectionInfo::user),
                     Codec.STRING.fieldOf("password").forGetter(ConnectionInfo::password),
-                    Codec.STRING.fieldOf("permission_database").forGetter(ConnectionInfo::permissionDatabase)
+                    Codec.STRING.fieldOf("permissionDatabase").forGetter(ConnectionInfo::permissionDatabase)
                 ).apply(instance, DatabaseController::ConnectionInfo)
             }
         }
