@@ -10,12 +10,12 @@ data class MessageCountResponse(
     /**
      * The amount of unfiltered, local messages sent.
      */
-    val localCount: Int,
+    val local: Int,
 
     /**
      * The amount of messages filtered from any chat mode.
      */
-    val filteredCount: Int
+    val filtered: Int
 ) {
     companion object {
         /**
@@ -23,8 +23,8 @@ data class MessageCountResponse(
          */
         val CODEC: Codec<MessageCountResponse> = RecordCodecBuilder.create { instance ->
             instance.group(
-                Codec.INT.fieldOf("local").forGetter(MessageCountResponse::localCount),
-                Codec.INT.fieldOf("filtered").forGetter(MessageCountResponse::filteredCount)
+                Codec.INT.fieldOf("local").forGetter(MessageCountResponse::local),
+                Codec.INT.fieldOf("filtered").forGetter(MessageCountResponse::filtered)
             ).apply(instance, ::MessageCountResponse)
         }
     }

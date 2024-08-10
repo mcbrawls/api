@@ -13,7 +13,7 @@ data class ProfileResponse(
     /**
      * The UUID of the associated player.
      */
-    val playerId: UUID,
+    val uuid: UUID,
 
     /**
      * The rank of the associated player.
@@ -31,7 +31,7 @@ data class ProfileResponse(
          */
         val CODEC = RecordCodecBuilder.create { instance ->
             instance.group(
-                CustomCodecs.UUID.fieldOf("uuid").forGetter(ProfileResponse::playerId),
+                CustomCodecs.UUID.fieldOf("uuid").forGetter(ProfileResponse::uuid),
                 Rank.CODEC.fieldOf("rank").forGetter(ProfileResponse::rank),
                 Codec.INT.fieldOf("experience").forGetter(ProfileResponse::experience)
             ).apply(instance, ::ProfileResponse)

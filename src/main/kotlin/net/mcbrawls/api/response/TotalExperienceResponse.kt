@@ -12,7 +12,7 @@ data class TotalExperienceResponse(
     /**
      * The uuid of the associated player.
      */
-    val playerId: UUID,
+    val uuid: UUID,
 
     /**
      * The total experience earned (lifetime).
@@ -25,8 +25,8 @@ data class TotalExperienceResponse(
          */
         val CODEC: Codec<TotalExperienceResponse> = RecordCodecBuilder.create { instance ->
             instance.group(
-                CustomCodecs.UUID.fieldOf("uuid").forGetter(TotalExperienceResponse::playerId),
-                Codec.INT.fieldOf("total_experience").forGetter(TotalExperienceResponse::totalExperience)
+                CustomCodecs.UUID.fieldOf("uuid").forGetter(TotalExperienceResponse::uuid),
+                Codec.INT.fieldOf("totalExperience").forGetter(TotalExperienceResponse::totalExperience)
             ).apply(instance, ::TotalExperienceResponse)
         }
     }

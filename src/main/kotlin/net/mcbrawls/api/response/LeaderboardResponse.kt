@@ -12,7 +12,7 @@ data class LeaderboardResponse(
     /**
      * The uuid of the associated player.
      */
-    val playerId: UUID,
+    val uuid: UUID,
 
     /**
      * The position of the associated player on the leaderboard.
@@ -30,7 +30,7 @@ data class LeaderboardResponse(
          */
         val CODEC = RecordCodecBuilder.create { instance ->
             instance.group(
-                CustomCodecs.UUID.fieldOf("uuid").forGetter(LeaderboardResponse::playerId),
+                CustomCodecs.UUID.fieldOf("uuid").forGetter(LeaderboardResponse::uuid),
                 Codec.INT.fieldOf("position").forGetter(LeaderboardResponse::position),
                 Codec.INT.fieldOf("value").forGetter(LeaderboardResponse::value)
             ).apply(instance, ::LeaderboardResponse)
