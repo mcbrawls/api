@@ -7,6 +7,7 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import net.mcbrawls.api.generateEnumSqlType
 
 @Serializable(with = PartnerStatus.Serializer::class)
 enum class PartnerStatus(val id: String) {
@@ -14,7 +15,9 @@ enum class PartnerStatus(val id: String) {
     CANCELLED("cancelled");
 
     companion object {
-        private val BY_ID = entries.associateBy(PartnerStatus::id)
+        val BY_ID = entries.associateBy(PartnerStatus::id)
+
+        val sqlType: String = generateEnumSqlType(BY_ID.keys)
 
         fun fromId(id: Any) = BY_ID[id.toString()] ?: throw IllegalArgumentException("Unknown partner status: $id")
     }

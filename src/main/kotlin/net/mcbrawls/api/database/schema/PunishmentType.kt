@@ -1,5 +1,7 @@
 package net.mcbrawls.api.database.schema;
 
+import net.mcbrawls.api.generateEnumSqlType
+
 /**
  * A type of offence.
  */
@@ -22,7 +24,9 @@ enum class PunishmentType(
     BAN("ban", canHaveDuration = true, kickOffender = true);
 
     companion object {
-        private val BY_ID = entries.associateBy(PunishmentType::id)
+        val BY_ID = entries.associateBy(PunishmentType::id)
+
+        val sqlType: String = generateEnumSqlType(BY_ID.keys)
 
         fun fromId(id: Any) = BY_ID[id.toString()] ?: throw IllegalArgumentException("Unknown punishment type: $id")
     }

@@ -34,6 +34,7 @@ import net.mcbrawls.api.database.schema.DbChatMode
 import net.mcbrawls.api.database.schema.GameInstances
 import net.mcbrawls.api.database.schema.GameParticipants
 import net.mcbrawls.api.database.schema.LuckPermsPlayers
+import net.mcbrawls.api.database.schema.PartnerStatus
 import net.mcbrawls.api.database.schema.Partnerships
 import net.mcbrawls.api.database.schema.Sessions
 import net.mcbrawls.api.database.schema.StatisticEvents

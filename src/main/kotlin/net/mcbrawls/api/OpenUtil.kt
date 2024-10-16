@@ -17,3 +17,8 @@ inline fun runAsync(crossinline block: suspend CoroutineScope.() -> Unit) {
 fun file(path: String): File {
     return Path.of(path).toFile()
 }
+
+fun generateEnumSqlType(ids: Collection<String>): String {
+    val joined = ids.joinToString(transform = { "'$it'" })
+    return "enum($joined)"
+}

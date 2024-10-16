@@ -4,6 +4,7 @@ package net.mcbrawls.api.database.schema
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
+import net.mcbrawls.api.generateEnumSqlType
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 import org.jetbrains.exposed.sql.Table
@@ -42,21 +43,6 @@ val jsonConfig = Json {
     ignoreUnknownKeys = true
 }
 
-enum class DbChatMode(val id: String) {
-    LOCAL("local"),
-    PARTY("party"),
-    TEAM("team"),
-    MESSAGE("message"),
-    STAFF("staff"),
-    PARTNER("partner");
-
-    companion object {
-        private val BY_ID = entries.associateBy(DbChatMode::id)
-
-        fun fromId(id: Any) = BY_ID[id.toString()] ?: throw IllegalArgumentException("Unknown chat mode: $id")
-    }
-}
-
 object ApiKeys : Table("ApiKeys") {
     val playerId = reference(PLAYER_ID_KEY, Players.playerId)
     val apiKey = varchar("api_key", 32)
@@ -71,8 +57,8 @@ object ChatLogs : Table("ChatLogs") {
     val contemporaryUsername = varchar("contemporary_username", 16)
     val message = text("message")
     val recipients = json<JsonArray>("recipients", jsonConfig)
-    val chatMode = customEnumeration("chat_mode", sql = "ChatMode", toDb = DbChatMode::id, fromDb = DbChatMode::fromId)
-    val chatResult = customEnumeration("chat_result", sql = "ChatResult", toDb = ChatResult::id, fromDb = ChatResult::fromId)
+    val chatMode = customEnumeration("chat_mode", DbChatMode.sqlType, DbChatMode::fromId, DbChatMode::id)
+    val chatResult = customEnumeration("chat_result", ChatResult.sqlType, ChatResult::fromId, ChatResult::id)
     val gameInstanceUuid = varchar("game_instance_uuid", UUID_VARCHAR_LENGTH).nullable()
     val partyLeaderUuid = varchar("party_leader_uuid", UUID_VARCHAR_LENGTH).nullable()
     val timestamp = timestamp("timestamp").defaultExpression(CurrentTimestamp)
@@ -94,7 +80,7 @@ object GameInstances : Table("GameInstances") {
     val gameType = varchar("game_type", 100).default("unknown")
     val participants = json<JsonArray>("participants", jsonConfig)
     val additionalData = json<JsonArray>("additional_data", jsonConfig).nullable()
-    val removalReason = customEnumeration("removal_reason", sql = "RemovalReason", toDb = GameRemovalReason::id, fromDb = GameRemovalReason::fromId)
+    val removalReason = customEnumeration("removal_reason", GameRemovalReason.sqlType, GameRemovalReason::fromId, GameRemovalReason::id)
     val startedAt = timestamp("started_at")
     val endedAt = timestamp("ended_at")
 
@@ -132,7 +118,7 @@ object Medals : Table("Medals") {
 
 object Partnerships : Table("Partnerships") {
     val partnerName = text("partner_name")
-    val status = customEnumeration("status", sql = "PartnershipStatus", toDb = PartnerStatus::id, fromDb = PartnerStatus::fromId)
+    val status = customEnumeration("status", PartnerStatus.sqlType, PartnerStatus::fromId, PartnerStatus::id)
     val createdDate = date("created_date")
     val discordId = varchar("discord_id", 19)
     val partneredUsers = text("partnered_users")
@@ -180,7 +166,7 @@ object Punishments : Table("Punishments") {
     val playerId = reference(PLAYER_ID_KEY, Players.playerId)
     val contemporaryName = varchar("contemporary_name", 16)
     val officerId = varchar("officer_id", UUID_VARCHAR_LENGTH).nullable()
-    val punishmentType = customEnumeration("punishment_type", sql = "PunishmentType", toDb = PunishmentType::id, fromDb = PunishmentType::fromId)
+    val punishmentType = customEnumeration("punishment_type", PunishmentType.sqlType, PunishmentType::fromId, PunishmentType::id)
     val reason = text("reason").nullable()
     val playerMadeAwareAt = timestamp("player_made_aware_at").nullable()
     val acknowledgedAt = timestamp("acknowledged_at").nullable()

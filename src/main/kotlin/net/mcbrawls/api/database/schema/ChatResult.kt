@@ -1,5 +1,7 @@
 package net.mcbrawls.api.database.schema;
 
+import net.mcbrawls.api.generateEnumSqlType
+
 enum class ChatResult(val id: String) {
     /**
      * The chat message should be sent successfully.
@@ -22,7 +24,9 @@ enum class ChatResult(val id: String) {
     FILTERED_PROFANITY("filtered_profanity");
 
     companion object {
-        private val BY_ID = entries.associateBy(ChatResult::id)
+        val BY_ID = entries.associateBy(ChatResult::id)
+
+        val sqlType: String = generateEnumSqlType(BY_ID.keys)
 
         fun fromId(id: Any) = BY_ID[id.toString()] ?: throw IllegalArgumentException("Unknown chat result: $id")
     }

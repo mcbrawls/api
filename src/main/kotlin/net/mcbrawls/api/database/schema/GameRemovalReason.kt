@@ -1,5 +1,7 @@
 package net.mcbrawls.api.database.schema
 
+import net.mcbrawls.api.generateEnumSqlType
+
 /**
  * The reason for which a game instance was removed.
  */
@@ -30,7 +32,9 @@ enum class GameRemovalReason(val id: String) {
     INACTIVE("inactive");
 
     companion object {
-        private val BY_ID = entries.associateBy(GameRemovalReason::id)
+        val BY_ID = entries.associateBy(GameRemovalReason::id)
+
+        val sqlType: String = generateEnumSqlType(BY_ID.keys)
 
         fun fromId(id: Any) = BY_ID[id.toString()] ?: throw IllegalArgumentException("Unknown removal reason: $id")
     }

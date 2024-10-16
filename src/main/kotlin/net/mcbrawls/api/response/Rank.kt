@@ -21,7 +21,7 @@ enum class Rank(private val id: String) {
     DEFAULT("default");
 
     companion object {
-        private val BY_ID = entries.associateBy(Rank::id)
+        val BY_ID = entries.associateBy(Rank::id)
 
         fun fromId(id: String): Rank = BY_ID[id] ?: throw IllegalArgumentException("Unknown rank: $id")
     }
