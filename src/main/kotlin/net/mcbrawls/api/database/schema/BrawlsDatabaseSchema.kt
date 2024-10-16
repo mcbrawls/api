@@ -142,7 +142,7 @@ object PlayerReports : Table("PlayerReports") {
     val timestamp = timestamp("timestamp").defaultExpression(CurrentTimestamp)
     val resolvedAt = timestamp("resolved_at").nullable()
 
-    override val primaryKey = PrimaryKey(reporterId)
+    override val primaryKey = PrimaryKey(reportId)
 }
 
 object Players : Table("Players") {
