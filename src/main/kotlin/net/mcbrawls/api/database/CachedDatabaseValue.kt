@@ -10,7 +10,7 @@ class CachedDatabaseValue<T>(
     /**
      * The default value.
      */
-    private val defaultValue: T,
+    defaultValue: T,
 
     /**
      * The function to select the true value from the database.
@@ -28,8 +28,7 @@ class CachedDatabaseValue<T>(
      * The value of this instance.
      */
     @field:Volatile
-    var value: T = defaultValue
-        private set
+    private var value: T = defaultValue
 
     fun get(): T {
         return value
@@ -47,8 +46,7 @@ class CachedDatabaseValue<T>(
      * Refreshes the current value from the database.
      */
     suspend fun refresh() {
-        val selectedValue = selector.select(defaultValue)
-        value = selectedValue
+        value = selector.select()
     }
 
     fun interface ValueModifier<T> {
@@ -64,6 +62,6 @@ class CachedDatabaseValue<T>(
          * Selects the value from the database.
          * @return the deferred result
          */
-        suspend fun select(defaultValue: T): T
+        suspend fun select(): T
     }
 }
