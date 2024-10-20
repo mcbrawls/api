@@ -20,7 +20,7 @@ class CachedDatabaseValue<T>(
     init {
         runAsync {
             // refresh value from database
-            refreshValue()
+            refresh()
         }
     }
 
@@ -31,18 +31,22 @@ class CachedDatabaseValue<T>(
     var value: T = defaultValue
         private set
 
+    fun get(): T {
+        return value
+    }
+
     /**
      * Modifies the value locally and on the database according to the function provided.
      * @return the new local value
      */
-    suspend fun modifyValue(modifier: ValueModifier<T>): T {
+    suspend fun modify(modifier: ValueModifier<T>): T {
         return modifier.modify(value).also { modifiedValue -> value = modifiedValue }
     }
 
     /**
      * Refreshes the current value from the database.
      */
-    suspend fun refreshValue() {
+    suspend fun refresh() {
         val selectedValue = selector.select(defaultValue)
         value = selectedValue
     }
