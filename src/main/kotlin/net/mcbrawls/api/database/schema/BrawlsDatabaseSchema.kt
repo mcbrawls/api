@@ -4,7 +4,6 @@ package net.mcbrawls.api.database.schema
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
-import net.mcbrawls.api.generateEnumSqlType
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 import org.jetbrains.exposed.sql.Table
@@ -129,9 +128,10 @@ object Partnerships : Table("Partnerships") {
 
 object PlayerCosmetics : Table("PlayerCosmetics") {
     val playerId = reference(PLAYER_ID_KEY, Players.playerId)
-    val title = varchar("title", 100).nullable()
+    val type = varchar("type", 100)
+    val value = varchar("value", 100).nullable()
 
-    override val primaryKey = PrimaryKey(playerId)
+    override val primaryKey = PrimaryKey(playerId, type)
 }
 
 object PlayerReports : Table("PlayerReports") {
