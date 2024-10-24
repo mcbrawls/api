@@ -25,10 +25,6 @@ object UUIDSerializer : KSerializer<UUID> {
         val dashed = "${substring(0, 8)}-${substring(8, 12)}-${substring(12, 16)}-${substring(16, 20)}-${substring(20)}"
         return UUID.fromString(dashed)
     }
-
-    init {
-        println("123e4567e89b12d3a456426655440000".toUUIDFromUndashed())
-    }
 }
 
 typealias SerializableUUID = @Serializable(with = UUIDSerializer::class) UUID
