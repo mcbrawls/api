@@ -180,7 +180,6 @@ object Purchases : Table("Purchases") {
     val transactionId = varchar("transaction_id", 40)
     val playerId = reference(PLAYER_ID_KEY, Players.playerId).index()
     val packageId = integer("package_id")
-    val packageExpiry = integer("package_expiry")
     val packageName = text("package_name")
     val timestamp = timestamp("timestamp").defaultExpression(CurrentTimestamp)
 
