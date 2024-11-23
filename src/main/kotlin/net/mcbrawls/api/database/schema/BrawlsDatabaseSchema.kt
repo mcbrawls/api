@@ -4,6 +4,7 @@ package net.mcbrawls.api.database.schema
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 import org.jetbrains.exposed.sql.Table
@@ -78,7 +79,7 @@ object GameInstances : Table("GameInstances") {
     val uuid = varchar("uuid", UUID_VARCHAR_LENGTH)
     val gameType = varchar("game_type", 100).default("unknown")
     val participants = json<JsonArray>("participants", jsonConfig)
-    val additionalData = json<JsonArray>("additional_data", jsonConfig).nullable()
+    val additionalData = json<JsonElement>("additional_data", jsonConfig).nullable()
     val removalReason = customEnumeration("removal_reason", GameRemovalReason.sqlType, GameRemovalReason::fromId, GameRemovalReason::id)
     val startedAt = timestamp("started_at")
     val endedAt = timestamp("ended_at")
