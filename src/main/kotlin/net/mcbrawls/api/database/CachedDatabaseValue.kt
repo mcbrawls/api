@@ -39,7 +39,9 @@ class CachedDatabaseValue<T>(
      * @return the new local value
      */
     suspend fun modify(modifier: ValueModifier<T>): T {
-        return modifier.modify(value).also { modifiedValue -> value = modifiedValue }
+        val newValue = modifier.modify { value }
+        value = newValue
+        return newValue
     }
 
     /**
@@ -54,7 +56,7 @@ class CachedDatabaseValue<T>(
          * Calculates the change to the database (for local storage) and makes the database change.
          * @return the new cached value
          */
-        suspend fun modify(currentValue: T): T
+        suspend fun modify(currentValue: () -> T): T
     }
 
     fun interface Selector<T> {
