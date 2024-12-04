@@ -24,18 +24,21 @@ fun <T : Table> T.insertOrUpdate(
     insertBody: T.(UpdateBuilder<*>) -> Unit,
     updateWhere: (SqlExpressionBuilder.() -> Op<Boolean>)? = null,
     updateLimit: Int? = null,
-    updateBody: T.(UpdateStatement) -> Unit
+    block: T.(UpdateStatement) -> Unit
 ): Int {
     val result = insertIgnore(insertBody)
     val insertedCount = result.insertedCount
     return if (insertedCount > 0) {
         insertedCount
     } else {
-        update(
-            where = updateWhere,
-            limit = updateLimit,
-            body = updateBody
-        )
+        if (updateWhere != null) {
+            update(where = updateWhere, limit = updateLimit, body = block)
+        } else {
+            update(
+                limit = updateLimit,
+                body = block
+            )
+        }
     }
 }
 

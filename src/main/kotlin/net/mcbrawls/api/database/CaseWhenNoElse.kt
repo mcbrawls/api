@@ -33,9 +33,7 @@ class CaseWhenNoElse<T> : Expression<T>(), ComplexExpression {
 
     companion object {
         /**
-         * Compares [value] against any chained conditional expressions.
-         *
-         * If [value] is `null`, chained conditionals will be evaluated separately until the first is evaluated as `true`.
+         * Compares] against any chained conditional expressions.
          */
         fun <T> caseNoElse(): CaseWhenNoElse<T> = CaseWhenNoElse()
     }

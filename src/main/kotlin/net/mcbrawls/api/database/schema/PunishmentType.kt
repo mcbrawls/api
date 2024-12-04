@@ -1,5 +1,6 @@
-package net.mcbrawls.api.database.schema;
+package net.mcbrawls.api.database.schema
 
+import net.mcbrawls.api.database.schema.PunishmentType.entries
 import net.mcbrawls.api.generateEnumSqlType
 
 /**

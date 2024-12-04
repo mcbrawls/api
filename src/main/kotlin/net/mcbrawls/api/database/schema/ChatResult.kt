@@ -1,5 +1,6 @@
-package net.mcbrawls.api.database.schema;
+package net.mcbrawls.api.database.schema
 
+import net.mcbrawls.api.database.schema.ChatResult.entries
 import net.mcbrawls.api.generateEnumSqlType
 
 enum class ChatResult(val id: String) {
