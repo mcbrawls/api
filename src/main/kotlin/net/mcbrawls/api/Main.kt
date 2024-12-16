@@ -20,7 +20,6 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
-import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import kotlinx.serialization.encodeToString
@@ -137,7 +136,16 @@ fun main(args: Array<String>) {
                     swaggerUI("/v2/api.json")
                 }
 
-                get("") {
+                get("", {
+                    description = "The root of the API."
+
+                    response {
+                        HttpStatusCode.OK to {
+                            description = "Successful request."
+                            body<String>()
+                        }
+                    }
+                }) {
                     call.respond(
                         HttpStatusCode.OK,
                         "MC Brawls API https://api.mcbrawls.net - Docs: https://api.mcbrawls.net/docs"
