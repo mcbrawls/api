@@ -1,6 +1,5 @@
 package net.mcbrawls.api.leaderboard
 
-import net.mcbrawls.api.database.schema.StatisticEvents
 import org.jetbrains.exposed.sql.Expression
 import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.ResultRow
@@ -26,9 +25,7 @@ data class LeaderboardType(
         private val valueExpression: Expression<*>
     ) {
         fun createQuery(limit: Int? = null, offset: Long? = null): Query {
-            query
-                .groupBy(StatisticEvents.playerId)
-                .orderBy(valueExpression, SortOrder.DESC)
+            query.orderBy(valueExpression, SortOrder.DESC)
 
             if (limit != null) {
                 query.limit(limit).offset(offset ?: 0)

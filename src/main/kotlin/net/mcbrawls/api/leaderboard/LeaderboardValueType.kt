@@ -20,7 +20,8 @@ enum class LeaderboardValueType(
                     .select(
                         ExperienceEntries.playerId,
                         valueExpression
-                    ),
+                    )
+                    .groupBy(ExperienceEntries.playerId),
                 valueExpression
             )
         }
@@ -34,7 +35,8 @@ enum class LeaderboardValueType(
                     .select(
                         StatisticEvents.playerId,
                         valueExpression
-                    ),
+                    )
+                    .groupBy(StatisticEvents.playerId),
                 valueExpression
             )
         }
