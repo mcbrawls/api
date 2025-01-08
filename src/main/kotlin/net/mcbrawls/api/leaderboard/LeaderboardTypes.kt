@@ -29,8 +29,10 @@ object LeaderboardTypes : BasicRegistry<LeaderboardType>() {
                     .select(
                         ExperienceEntries.playerId,
                         valueExpression
-                    ),
-                valueExpression
+                    )
+                    .groupBy(ExperienceEntries.playerId),
+                valueExpression,
+                ExperienceEntries.playerId,
             )
         }
     )

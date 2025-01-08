@@ -22,7 +22,8 @@ enum class LeaderboardValueType(
                         valueExpression
                     )
                     .groupBy(ExperienceEntries.playerId),
-                valueExpression
+                valueExpression,
+                ExperienceEntries.playerId,
             )
         }
     ),

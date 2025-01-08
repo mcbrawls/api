@@ -1,5 +1,7 @@
 package net.mcbrawls.api.leaderboard
 
+import net.mcbrawls.api.database.schema.StatisticEvents
+import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Expression
 import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.ResultRow
@@ -16,13 +18,14 @@ data class LeaderboardType(
     /**
      * Provides the leaderboard results.
      */
-    val queryFactory: Transaction.() -> LeaderboardQueryFactory
+    val queryFactory: Transaction.() -> LeaderboardQueryFactory,
 ) {
     val id: String by lazy { LeaderboardTypes[this]!! }
 
     data class LeaderboardQueryFactory(
         private val query: Query,
-        private val valueExpression: Expression<*>
+        private val valueExpression: Expression<*>,
+        val playerIdColumn: Column<String> = StatisticEvents.playerId,
     ) {
         fun createQuery(limit: Int? = null, offset: Long? = null): Query {
             query.orderBy(valueExpression, SortOrder.DESC)

@@ -35,7 +35,6 @@ import net.mcbrawls.api.database.schema.GameParticipants
 import net.mcbrawls.api.database.schema.LuckPermsPlayers
 import net.mcbrawls.api.database.schema.Partnerships
 import net.mcbrawls.api.database.schema.Sessions
-import net.mcbrawls.api.database.schema.StatisticEvents
 import net.mcbrawls.api.leaderboard.LeaderboardTypes
 import net.mcbrawls.api.response.Leaderboard
 import net.mcbrawls.api.response.LeaderboardEntry
@@ -266,12 +265,8 @@ fun main(args: Array<String>) {
                                 val factory = boardType.queryFactory.invoke(transaction)
                                 val query = factory.createQuery(limit, offset)
                                 query.forEachIndexed { index, row ->
-                                    val uuid = runCatching {
-                                        val uuidString = row[StatisticEvents.playerId]
-                                        UUID.fromString(uuidString)
-                                    }.getOrElse {
-                                        return@forEachIndexed
-                                    }
+                                    val uuidString = row[factory.playerIdColumn]
+                                    val uuid = UUID.fromString(uuidString)
 
                                     val value = factory.getRowResult(row, Number::class) ?: return@forEachIndexed
                                     add(LeaderboardEntry(uuid, index + 1, value.toLong()))
