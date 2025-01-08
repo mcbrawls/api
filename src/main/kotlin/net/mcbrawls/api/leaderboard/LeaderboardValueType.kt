@@ -1,5 +1,6 @@
 package net.mcbrawls.api.leaderboard
 
+import net.mcbrawls.api.database.schema.ExperienceEntries
 import net.mcbrawls.api.database.schema.StatisticEvents
 import net.mcbrawls.api.leaderboard.LeaderboardType.LeaderboardQueryFactory
 import org.jetbrains.exposed.sql.Transaction
@@ -12,11 +13,12 @@ enum class LeaderboardValueType(
 ) {
     EXPERIENCE_SUM(
         {
-            val valueExpression = StatisticEvents.experienceAmount.sum().alias("value")
+            val valueExpression = ExperienceEntries.experienceAmount.sum().alias("value")
             LeaderboardQueryFactory(
-                StatisticEvents
+                ExperienceEntries
+                    .innerJoin(StatisticEvents)
                     .select(
-                        StatisticEvents.playerId,
+                        ExperienceEntries.playerId,
                         valueExpression
                     ),
                 valueExpression

@@ -21,13 +21,14 @@ dependencies {
     val ktor_version = property("ktor_version")
     val exposed_version = property("exposed_version")
     val hikari_version = property("hikari_version")
+    val ktor_swagger_version = property("ktor_swagger_version")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("io.ktor:ktor-server-auth:$ktor_version")
-    implementation("io.github.smiley4:ktor-swagger-ui:3.2.0")
+    implementation("io.github.smiley4:ktor-swagger-ui:$ktor_swagger_version")
 
     implementation("com.mysql:mysql-connector-j:8.3.0")
     implementation("org.slf4j:slf4j-simple:2.0.12")
@@ -50,7 +51,7 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 
     compilerOptions {
         freeCompilerArgs.addAll(

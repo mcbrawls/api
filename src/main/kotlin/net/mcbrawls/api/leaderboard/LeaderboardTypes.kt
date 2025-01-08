@@ -2,6 +2,7 @@ package net.mcbrawls.api.leaderboard
 
 import kotlinx.datetime.toKotlinInstant
 import net.mcbrawls.api.database.CaseWhenNoElse.Companion.caseNoElse
+import net.mcbrawls.api.database.schema.ExperienceEntries
 import net.mcbrawls.api.database.schema.StatisticEvents
 import net.mcbrawls.api.leaderboard.LeaderboardType.LeaderboardQueryFactory
 import net.mcbrawls.api.registry.BasicRegistry
@@ -22,11 +23,11 @@ object LeaderboardTypes : BasicRegistry<LeaderboardType>() {
     val TOTAL_EXPERIENCE = register(
         "total_experience",
         LeaderboardType("Total Experience Leaderboard") {
-            val valueExpression = StatisticEvents.experienceAmount.sum().alias("value")
+            val valueExpression = ExperienceEntries.experienceAmount.sum().alias("value")
             LeaderboardQueryFactory(
-                StatisticEvents
+                ExperienceEntries
                     .select(
-                        StatisticEvents.playerId,
+                        ExperienceEntries.playerId,
                         valueExpression
                     ),
                 valueExpression

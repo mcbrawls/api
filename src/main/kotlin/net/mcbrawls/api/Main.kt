@@ -10,7 +10,6 @@ import io.github.smiley4.ktorswaggerui.routing.swaggerUI
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
-import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.UserIdPrincipal
@@ -30,6 +29,7 @@ import net.mcbrawls.api.database.schema.ApiKeys
 import net.mcbrawls.api.database.schema.ChatLogs
 import net.mcbrawls.api.database.schema.ChatResult
 import net.mcbrawls.api.database.schema.DbChatMode
+import net.mcbrawls.api.database.schema.ExperienceEntries
 import net.mcbrawls.api.database.schema.GameInstances
 import net.mcbrawls.api.database.schema.GameParticipants
 import net.mcbrawls.api.database.schema.LuckPermsPlayers
@@ -323,10 +323,10 @@ fun main(args: Array<String>) {
                         } ?: Rank.DEFAULT
 
                         val experience = transaction(database) {
-                            val sum = StatisticEvents.experienceAmount.sum()
-                            StatisticEvents
+                            val sum = ExperienceEntries.experienceAmount.sum()
+                            ExperienceEntries
                                 .select(sum)
-                                .where { StatisticEvents.playerId eq uuidString }
+                                .where { ExperienceEntries.playerId eq uuidString }
                                 .singleOrNull()?.getOrNull(sum)
                         } ?: 0
 

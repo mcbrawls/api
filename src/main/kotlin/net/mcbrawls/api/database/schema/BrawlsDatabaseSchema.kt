@@ -202,8 +202,17 @@ object StatisticEvents : Table("StatisticEvents") {
     val causeId = text("cause_id")
     val gameType = varchar("game_type", 100).nullable()
     val gameUuid = varchar("game_uuid", UUID_VARCHAR_LENGTH).nullable()
+    val timestamp = timestamp("timestamp").defaultExpression(CurrentTimestamp)
+
+    override val primaryKey = PrimaryKey(eventId)
+}
+
+object ExperienceEntries : Table("ExperienceEntries") {
+    val eventId = integer("event_id").autoIncrement()
+    val playerId = reference(PLAYER_ID_KEY, Players.playerId).index()
     val experienceAmount = integer("experience_amount")
     val timestamp = timestamp("timestamp").defaultExpression(CurrentTimestamp)
+    val statisticEvent = reference("statistic_event", StatisticEvents.eventId).nullable()
 
     override val primaryKey = PrimaryKey(eventId)
 }
