@@ -31,7 +31,7 @@ data class LeaderboardType(
                 .orderBy(valueExpression, SortOrder.DESC)
 
             if (limit != null) {
-                query.limit(limit, offset ?: 0)
+                query.limit(limit).offset(offset ?: 0)
             }
 
             return query
