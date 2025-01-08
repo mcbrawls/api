@@ -28,7 +28,7 @@ data class LeaderboardType(
         val playerIdColumn: Column<String> = StatisticEvents.playerId,
     ) {
         fun createQuery(limit: Int? = null, offset: Long? = null): Query {
-            query.orderBy(valueExpression, SortOrder.DESC)
+            query.groupBy(playerIdColumn).orderBy(valueExpression, SortOrder.DESC)
 
             if (limit != null) {
                 query.limit(limit).offset(offset ?: 0)
