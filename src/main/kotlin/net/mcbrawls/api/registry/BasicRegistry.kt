@@ -11,12 +11,7 @@ import kotlin.random.Random
 /**
  * A basic string-object registry.
  */
-open class BasicRegistry<T : Any>(
-    /**
-     * Whether this registry can be modified.
-     */
-    private val modifiable: Boolean = false
-) {
+open class BasicRegistry<T : Any> {
     private val entries = mutableListOf<T>()
     private val keys = mutableListOf<String>()
     private val keyToEntryMap = mutableMapOf<String, T>()
@@ -41,16 +36,9 @@ open class BasicRegistry<T : Any>(
      * Registers [entry] to the registry under [key].
      * @return the passed [entry]
      */
-    fun register(key: String, entry: T): T {
+    fun <O : T> register(key: String, entry: O): O {
         if (keys.contains(key)) {
-            if (modifiable) {
-                // remove old entry object
-                val oldEntry = this[key]
-                entries.remove(oldEntry)
-                entryToKeyMap.remove(oldEntry)
-            } else {
-                throw UnsupportedOperationException("Key $key already registered")
-            }
+            throw UnsupportedOperationException("Key $key already registered")
         }
 
         entries.add(entry)
