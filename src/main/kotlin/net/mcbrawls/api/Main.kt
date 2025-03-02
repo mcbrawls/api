@@ -35,9 +35,10 @@ import net.mcbrawls.api.database.schema.GameParticipants
 import net.mcbrawls.api.database.schema.LuckPermsPlayers
 import net.mcbrawls.api.database.schema.Partnerships
 import net.mcbrawls.api.database.schema.Sessions
+import net.mcbrawls.api.leaderboard.LeaderboardGameType
 import net.mcbrawls.api.leaderboard.LeaderboardTypes
+import net.mcbrawls.api.leaderboard.LeaderboardValueType
 import net.mcbrawls.api.response.Leaderboard
-import net.mcbrawls.api.response.LeaderboardEntry
 import net.mcbrawls.api.response.MessageCountResponse
 import net.mcbrawls.api.response.PartnershipResponse
 import net.mcbrawls.api.response.Profile
@@ -126,13 +127,13 @@ fun main(args: Array<String>) {
 
         // routes
         routing {
-            route("/v2") {
+            route("/v3") {
                 route("api.json") {
                     openApiSpec()
                 }
 
                 route("docs") {
-                    swaggerUI("/v2/api.json")
+                    swaggerUI("/v3/api.json")
                 }
 
                 get("", {
@@ -196,7 +197,7 @@ fun main(args: Array<String>) {
 
                         try {
                             UUID.fromString(uuidString)
-                        } catch (exception: IllegalArgumentException) {
+                        } catch (_: IllegalArgumentException) {
                             call.respond(HttpStatusCode.BadRequest, "Not a valid uuid: $uuidString")
                             return@get
                         }
@@ -239,14 +240,16 @@ fun main(args: Array<String>) {
 
                             pathParameter<String>("limit") {
                                 description = "The maximum amount of entries to display."
+                                required = false
                             }
 
                             pathParameter<String>("offset") {
                                 description = "The offset index for the entries to display from. Requires limit."
+                                required = false
                             }
                         }
 
-                        objectResponse<List<Leaderboard>>()
+                        objectResponse<Leaderboard>()
                     }) {
                         val limit = call.parameters["limit"]?.toIntOrNull()
                         val offset = call.parameters["offset"]?.toLongOrNull()
@@ -259,22 +262,63 @@ fun main(args: Array<String>) {
                             return@get
                         }
 
-                        val entries = transaction(database) {
-                            val transaction = this
-                            buildList {
-                                val factory = boardType.queryFactory.invoke(transaction)
-                                val query = factory.createQuery(limit, offset)
-                                query.forEachIndexed { index, row ->
-                                    val uuidString = row[factory.playerIdColumn]
-                                    val uuid = UUID.fromString(uuidString)
+                        val entries = StatisticUtils.createLeaderboardEntries(database, boardType.queryFactory, limit, offset)
 
-                                    val value = factory.getRowResult(row, Number::class) ?: return@forEachIndexed
-                                    add(LeaderboardEntry(uuid, index + 1, value.toLong()))
-                                }
+                        val leaderboard = Leaderboard(boardType.id, boardType.title, entries)
+                        call.respondJson(Json.encodeToString(leaderboard))
+                    }
+
+                    get("/stats/{cause}/{game?}", {
+                        description = "Retrieves a leaderboard for the given statistic parameters."
+
+                        request {
+                            pathParameter<String>("cause") {
+                                description = "The statistic cause."
+                            }
+
+                            pathParameter<String>("game") {
+                                description = "The game type. Optional."
+                                required = false
+                            }
+
+                            pathParameter<String>("limit") {
+                                description = "The maximum number of entries to display."
+                                required = false
+                            }
+
+                            pathParameter<String>("offset") {
+                                description = "The offset index for the entries to display from. Requires limit."
+                                required = false
+                            }
+
+                            pathParameter<LeaderboardValueType>("type") {
+                                description = "The value type."
+                                required = false
                             }
                         }
 
-                        val leaderboard = Leaderboard(boardType.id, boardType.title, entries)
+                        objectResponse<Leaderboard>()
+                    }) {
+                        val limit = call.parameters["limit"]?.toIntOrNull()
+                        val offset = call.parameters["offset"]?.toLongOrNull()
+                        val valueType = call.parameters["type"]?.let {
+                            runCatching {
+                                LeaderboardValueType.valueOf(it.uppercase())
+                            }.getOrNull()
+                        } ?: LeaderboardValueType.EVENT_COUNT
+
+                        val cause = call.parameters["cause"]!!
+                        val gameType = call.parameters["game"]?.let {
+                            val name = it.uppercase()
+                            runCatching {
+                                LeaderboardGameType.valueOf(name)
+                            }.getOrElse { throwable ->
+                                call.respond(HttpStatusCode.BadRequest, "Not a valid game type")
+                                return@get
+                            }
+                        }
+
+                        val leaderboard = StatisticUtils.createLeaderboard(database, gameType, cause, valueType, limit, offset)
                         call.respondJson(Json.encodeToString(leaderboard))
                     }
 
@@ -413,14 +457,14 @@ fun main(args: Array<String>) {
 
                 route("{...}") {
                     handle {
-                        call.respond(HttpStatusCode.NotFound, "Requested route was not found. See docs at /v2/docs.")
+                        call.respond(HttpStatusCode.NotFound, "Requested route was not found. See docs at /v3/docs.")
                     }
                 }
             }
 
             route("{...}") {
                 handle {
-                    call.respond(HttpStatusCode.NotFound, "Page not found. Should you be using /v2?")
+                    call.respond(HttpStatusCode.NotFound, "Page not found. Should you be using /v3?")
                 }
             }
         }

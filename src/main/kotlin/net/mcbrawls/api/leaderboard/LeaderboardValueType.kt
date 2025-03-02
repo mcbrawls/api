@@ -1,5 +1,6 @@
 package net.mcbrawls.api.leaderboard
 
+import kotlinx.serialization.Serializable
 import net.mcbrawls.api.database.schema.ExperienceEntries
 import net.mcbrawls.api.database.schema.StatisticEvents
 import net.mcbrawls.api.leaderboard.LeaderboardType.LeaderboardQueryFactory
@@ -8,6 +9,7 @@ import org.jetbrains.exposed.sql.alias
 import org.jetbrains.exposed.sql.count
 import org.jetbrains.exposed.sql.sum
 
+@Serializable
 enum class LeaderboardValueType(
     val leaderboardQuery: Transaction.() -> LeaderboardQueryFactory
 ) {
@@ -18,11 +20,10 @@ enum class LeaderboardValueType(
                 ExperienceEntries
                     .innerJoin(StatisticEvents)
                     .select(
-                        ExperienceEntries.playerId,
+                        StatisticEvents.playerId,
                         valueExpression
                     ),
                 valueExpression,
-                ExperienceEntries.playerId,
             )
         }
     ),

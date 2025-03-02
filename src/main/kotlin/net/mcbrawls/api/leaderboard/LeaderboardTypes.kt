@@ -36,38 +36,6 @@ object LeaderboardTypes : BasicRegistry<LeaderboardType>() {
         }
     )
 
-    val DODGEBOLT_ROUNDS_WON = register(
-        "dodgebolt_rounds_won",
-        LeaderboardType(
-            "Dodgebolt Rounds Won Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.DODGEBOLT, "round_win")
-        )
-    )
-
-    val DODGEBOLT_GAMES_WON = register(
-        "dodgebolt_games_won",
-        LeaderboardType(
-            "Dodgebolt Games Won Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.DODGEBOLT, "win")
-        )
-    )
-
-    val DODGEBOLT_KILLS = register(
-        "dodgebolt_kills",
-        LeaderboardType(
-            "Dodgebolt Kills Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.DODGEBOLT, "kill")
-        )
-    )
-
-    val DODGEBOLT_DEATHS = register(
-        "dodgebolt_deaths",
-        LeaderboardType(
-            "Dodgebolt Deaths Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.DODGEBOLT, "death")
-        )
-    )
-
     val DODGEBOLT_HIT_RATIO = register(
         "dodgebolt_hit_ratio",
         LeaderboardType(
@@ -81,150 +49,6 @@ object LeaderboardTypes : BasicRegistry<LeaderboardType>() {
         LeaderboardType(
             "Dodgebolt Kill / Death Ratio Leaderboard",
             createRatio(LeaderboardGameType.DODGEBOLT, "kill", "death", 30)
-        )
-    )
-
-    val OLD_RISE_SURVIVAL = register(
-        "old_rise_survival",
-        LeaderboardType(
-            "Rise Survival Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.RISE, "outlive")
-        )
-    )
-
-    val OLD_RISE_ROUNDS_WON = register(
-        "old_rise_rounds_won",
-        LeaderboardType(
-            "Rise Rounds Won Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.RISE, "round_win")
-        )
-    )
-
-    val OLD_RISE_DEATHS = register(
-        "old_rise_deaths",
-        LeaderboardType(
-            "Rise Deaths Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.RISE, "death")
-        )
-    )
-
-    val OLD_RISE_POWDER_FLOORS = register(
-        "old_rise_powder_floors",
-        LeaderboardType(
-            "Rise Floor Drops Survived Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.RISE, "powder_floors")
-        )
-    )
-
-    val ROCKETS_FIRED = register(
-        "rockets_fired",
-        LeaderboardType(
-            "Rockets Fired Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.ROCKET_SPLEEF, "rocket_fired")
-        )
-    )
-
-    val ROCKETS_HIT = register(
-        "rockets_hit",
-        LeaderboardType(
-            "Direct Rockets Hit Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.ROCKET_SPLEEF, "rocket_hit")
-        )
-    )
-
-    val ROCKET_SPLEEF_SURVIVAL = register(
-        "rocket_spleef_survival",
-        LeaderboardType(
-            "Rocket Spleef Survival Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.ROCKET_SPLEEF, "outlive")
-        )
-    )
-
-    val ROCKET_SPLEEF_KILLS = register(
-        "rocket_spleef_kills",
-        LeaderboardType(
-            "Rocket Spleef Kills Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.ROCKET_SPLEEF, "kill")
-        )
-    )
-
-    val ROCKET_SPLEEF_KILL_ASSISTS = register(
-        "rocket_spleef_kill_assists",
-        LeaderboardType(
-            "Rocket Spleef Kill Assists Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.ROCKET_SPLEEF, "kill_assist")
-        )
-    )
-
-    val ROCKET_SPLEEF_DEATHS = register(
-        "rocket_spleef_deaths",
-        LeaderboardType(
-            "Rocket Spleef Deaths Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.ROCKET_SPLEEF, "death")
-        )
-    )
-
-    val ROCKET_SPLEEF_PLACEMENT = register(
-        "rocket_spleef_placement",
-        LeaderboardType(
-            "Rocket Spleef Placement Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.ROCKET_SPLEEF, "placement", LeaderboardValueType.EXPERIENCE_SUM)
-        )
-    )
-
-    val RISE_CAPTURE_TIMES_CAPTURED = register(
-        "rise_capture_times_captured",
-        LeaderboardType(
-            "Rise Capture Times Captured Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.RISE_CAPTURE, "capture")
-        )
-    )
-
-    val RISE_CAPTURE_TIMES_COLLECTED = register(
-        "rise_capture_times_collected",
-        LeaderboardType(
-            "Rise Capture Times Collected Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.RISE_CAPTURE, "capture_collected")
-        )
-    )
-
-    val RISE_CAPTURE_TIMES_CAPTURE_LOST = register(
-        "rise_capture_times_capture_lost",
-        LeaderboardType(
-            "Rise Capture Times Capture Lost Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.RISE_CAPTURE, "capture_lost")
-        )
-    )
-
-    val RISE_CAPTURE_GAMES_WON = register(
-        "rise_capture_games_won",
-        LeaderboardType(
-            "Rise Capture Games Won Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.RISE_CAPTURE, "win")
-        )
-    )
-
-    val RISE_CAPTURE_GAMES_LOST = register(
-        "rise_capture_games_lost",
-        LeaderboardType(
-            "Rise Capture Games Lost Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.RISE_CAPTURE, "loss")
-        )
-    )
-
-    val RISE_CAPTURE_KILLS = register(
-        "rise_capture_kills",
-        LeaderboardType(
-            "Rise Capture Kills Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.RISE_CAPTURE, "kill")
-        )
-    )
-
-    val RISE_CAPTURE_FALLS = register(
-        "rise_capture_falls",
-        LeaderboardType(
-            "Rise Capture Falls Leaderboard",
-            createStatisticsQuery(LeaderboardGameType.RISE_CAPTURE, "fall")
         )
     )
 
@@ -243,8 +67,8 @@ object LeaderboardTypes : BasicRegistry<LeaderboardType>() {
         }
     )
 
-    private fun createStatisticsQuery(
-        gameType: LeaderboardGameType,
+    fun createStatisticsQuery(
+        gameType: LeaderboardGameType?,
         causeId: String,
         valueType: LeaderboardValueType = LeaderboardValueType.EVENT_COUNT
     ): Transaction.() -> LeaderboardQueryFactory {
@@ -252,7 +76,12 @@ object LeaderboardTypes : BasicRegistry<LeaderboardType>() {
             val function = valueType.leaderboardQuery
             val factory = function.invoke(this)
             factory.with { query ->
-                query.where { (StatisticEvents.gameType eq gameType.id) and (StatisticEvents.causeId eq causeId) }
+                val causeCheck = StatisticEvents.causeId eq causeId
+                if (gameType != null) {
+                    query.where { (StatisticEvents.gameType eq gameType.id) and causeCheck }
+                } else {
+                    query.where { causeCheck }
+                }
             }
         }
     }
