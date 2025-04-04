@@ -1,14 +1,18 @@
 package net.mcbrawls.api
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.file.Path
 
-@Suppress("DeferredResultUnused")
+@PublishedApi
+internal val scope = CoroutineScope(Dispatchers.IO.limitedParallelism(2))
+
 inline fun runAsync(crossinline block: suspend CoroutineScope.() -> Unit) {
-    GlobalScope.async { block.invoke(this) }
+    scope.launch {
+        block.invoke(this)
+    }
 }
 
 /**
