@@ -1,11 +1,11 @@
 package net.mcbrawls.api.database.schema
 
-import net.mcbrawls.api.database.schema.DbChatMode.entries
 import net.mcbrawls.api.generateEnumSqlType
 
 enum class DbChatMode(val id: String) {
     LOCAL("local"),
     PARTY("party"),
+    TOURNAMENT("tournament"),
     TEAM("team"),
     MESSAGE("message"),
     STAFF("staff"),
