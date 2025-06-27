@@ -1,12 +1,12 @@
 package net.mcbrawls.api.database
 
-import net.mcbrawls.api.runAsync
+import kotlinx.coroutines.runBlocking
 
 /**
  * A database value that does not need to be fetched every time it is required.
  * This object tracks changes to the database value as changes to the database are made.
  */
-class CachedDatabaseValue<T>(
+class CachedDatabaseValue<T : Any>(
     /**
      * The default value.
      */
@@ -17,12 +17,8 @@ class CachedDatabaseValue<T>(
      */
     private val selector: Selector<T>
 ) {
-    init {
-        runAsync {
-            // refresh value from database
-            refresh()
-        }
-    }
+    @field:Volatile
+    private var initializedOnce: Boolean = false
 
     /**
      * The value of this instance.
@@ -31,6 +27,12 @@ class CachedDatabaseValue<T>(
     private var value: T = defaultValue
 
     fun get(): T {
+        if (!initializedOnce) {
+            runBlocking {
+                refresh()
+            }
+        }
+
         return value
     }
 
@@ -48,6 +50,7 @@ class CachedDatabaseValue<T>(
      * Refreshes the current value from the database.
      */
     suspend fun refresh() {
+        initializedOnce = true
         value = selector.select()
     }
 
