@@ -69,6 +69,14 @@ object ChatLogs : Table("ChatLogs") {
     override val primaryKey = PrimaryKey(logId)
 }
 
+object CurrencyTransactions : Table("CurrencyTransactions") {
+    val transactionId = integer("transaction_id").autoIncrement()
+    val playerId = reference(PLAYER_ID_KEY, Players.playerId)
+    val change = integer("change")
+
+    override val primaryKey = PrimaryKey(transactionId)
+}
+
 object Friends : Table("Friends") {
     val initiator = reference("initiator", Players.playerId)
     val recipient = reference("recipient", Players.playerId)

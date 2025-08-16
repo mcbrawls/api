@@ -101,7 +101,7 @@ publishing {
         val envPassword = env["MAVEN_PASSWORD_ANDANTE"]
         if (envUsername != null && envPassword != null) {
             maven {
-                url = uri("https://maven.andante.dev/releases/")
+                url = uri("https://maven.mcbrawls.net/releases/")
                 credentials {
                     username = envUsername
                     password = envPassword
