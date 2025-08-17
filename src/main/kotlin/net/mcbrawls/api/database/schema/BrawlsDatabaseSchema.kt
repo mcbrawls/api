@@ -72,7 +72,7 @@ object ChatLogs : Table("ChatLogs") {
 object CurrencyTransactions : Table("CurrencyTransactions") {
     val transactionId = integer("transaction_id").autoIncrement()
     val playerId = reference(PLAYER_ID_KEY, Players.playerId)
-    val change = integer("change")
+    val change = long("change")
 
     override val primaryKey = PrimaryKey(transactionId)
 }
