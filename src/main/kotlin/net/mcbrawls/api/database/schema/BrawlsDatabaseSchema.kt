@@ -123,6 +123,7 @@ object MasteryQuests : Table("MasteryQuests") {
     val id = long("id").autoIncrement()
     val created = timestamp("created").defaultExpression(CurrentTimestamp)
     val playerId = reference(PLAYER_ID_KEY, Players.playerId)
+    val gameType = varchar("game_type", 100)
     val questType = varchar("quest_type", 100)
     val targetCount = integer("target_count")
 
