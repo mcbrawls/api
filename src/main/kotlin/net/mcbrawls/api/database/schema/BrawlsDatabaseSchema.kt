@@ -125,6 +125,7 @@ object MasteryQuests : Table("MasteryQuests") {
     val playerId = reference(PLAYER_ID_KEY, Players.playerId)
     val gameType = varchar("game_type", 100)
     val questType = varchar("quest_type", 100)
+    val difficulty = integer("difficulty")
     val targetCount = integer("target_count")
     val rewardXp = integer("reward_xp")
     val rewardMasteryXp = integer("reward_mastery_xp")
