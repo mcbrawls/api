@@ -126,6 +126,8 @@ object MasteryQuests : Table("MasteryQuests") {
     val gameType = varchar("game_type", 100)
     val questType = varchar("quest_type", 100)
     val targetCount = integer("target_count")
+    val rewardXp = integer("reward_xp")
+    val rewardMasteryXp = integer("reward_mastery_xp")
     val completedAt = timestamp("completed_at").nullable()
 
     override val primaryKey = PrimaryKey(id)
