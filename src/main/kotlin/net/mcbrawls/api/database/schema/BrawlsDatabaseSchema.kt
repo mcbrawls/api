@@ -119,6 +119,16 @@ object IpAddresses : Table("IpAddresses") {
     override val primaryKey = PrimaryKey(playerId, address)
 }
 
+object MasteryQuests : Table("MasteryQuests") {
+    val id = long("id").autoIncrement()
+    val created = timestamp("created").defaultExpression(CurrentTimestamp)
+    val playerId = reference(PLAYER_ID_KEY, Players.playerId)
+    val questType = varchar("quest_type", 100)
+    val targetCount = integer("target_count")
+
+    override val primaryKey = PrimaryKey(id)
+}
+
 object Medals : Table("Medals") {
     val playerId = reference(PLAYER_ID_KEY, Players.playerId)
     val medalId = varchar("medal_id", 100)
