@@ -21,7 +21,6 @@ import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.mcbrawls.api.database.BrawlsDatabaseFactory
 import net.mcbrawls.api.database.CachedDatabaseValue
@@ -312,7 +311,7 @@ fun main(args: Array<String>) {
                             val name = it.uppercase()
                             runCatching {
                                 LeaderboardGameType.valueOf(name)
-                            }.getOrElse { throwable ->
+                            }.getOrElse { _ ->
                                 call.respond(HttpStatusCode.BadRequest, "Not a valid game type")
                                 return@get
                             }
