@@ -15,7 +15,12 @@ class CachedDatabaseValue<T : Any>(
     /**
      * The function to select the true value from the database.
      */
-    private val selector: Selector<T>
+    private val selector: Selector<T>,
+
+    /**
+     * Called after initial initialization.
+     */
+    private val validator: ValueModifier<T>? = null,
 ) {
     @field:Volatile
     var initializedOnce: Boolean = false
@@ -31,6 +36,10 @@ class CachedDatabaseValue<T : Any>(
         if (!initializedOnce) {
             runBlocking {
                 refresh()
+
+                if (validator != null) {
+                    modify(validator)
+                }
             }
         }
 
