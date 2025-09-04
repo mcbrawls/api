@@ -18,7 +18,8 @@ class CachedDatabaseValue<T : Any>(
     private val selector: Selector<T>
 ) {
     @field:Volatile
-    private var initializedOnce: Boolean = false
+    var initializedOnce: Boolean = false
+        private set
 
     /**
      * The value of this instance.
@@ -50,8 +51,8 @@ class CachedDatabaseValue<T : Any>(
      * Refreshes the current value from the database.
      */
     suspend fun refresh() {
-        initializedOnce = true
         value = selector.select()
+        initializedOnce = true
     }
 
     fun interface ValueModifier<T> {
