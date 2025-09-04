@@ -128,6 +128,7 @@ object MasteryQuests : Table("MasteryQuests") {
     val difficulty = integer("difficulty")
     val targetCount = integer("target_count")
     val rewardXp = integer("reward_xp")
+    val rewardCurrency = integer("reward_currency")
     val rewardMasteryXp = integer("reward_mastery_xp")
     val completedAt = timestamp("completed_at").nullable()
 
