@@ -3,6 +3,7 @@ package net.mcbrawls.api.leaderboard
 import kotlinx.datetime.toKotlinInstant
 import net.mcbrawls.api.database.CaseWhenNoElse.Companion.caseNoElse
 import net.mcbrawls.api.database.schema.ExperienceEntries
+import net.mcbrawls.api.database.schema.MasteryQuests
 import net.mcbrawls.api.database.schema.StatisticEvents
 import net.mcbrawls.api.leaderboard.LeaderboardType.LeaderboardQueryFactory
 import net.mcbrawls.api.registry.BasicRegistry
@@ -32,6 +33,22 @@ object LeaderboardTypes : BasicRegistry<LeaderboardType>() {
                     ),
                 valueExpression,
                 ExperienceEntries.playerId,
+            )
+        }
+    )
+
+    val TOTAL_MASTERY_EXPERIENCE = register(
+        "total_mastery_experience",
+        LeaderboardType("Total Mastery Experience Leaderboard") {
+            val valueExpression = MasteryQuests.rewardMasteryXp.sum().alias("value")
+            LeaderboardQueryFactory(
+                MasteryQuests
+                    .select(
+                        MasteryQuests.playerId,
+                        valueExpression
+                    ),
+                valueExpression,
+                MasteryQuests.playerId,
             )
         }
     )
