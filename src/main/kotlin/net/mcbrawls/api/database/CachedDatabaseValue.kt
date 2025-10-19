@@ -6,7 +6,7 @@ import kotlinx.coroutines.runBlocking
  * A database value that does not need to be fetched every time it is required.
  * This object tracks changes to the database value as changes to the database are made.
  */
-class CachedDatabaseValue<T : Any>(
+class CachedDatabaseValue<T : Any?>(
     /**
      * The default value.
      */
