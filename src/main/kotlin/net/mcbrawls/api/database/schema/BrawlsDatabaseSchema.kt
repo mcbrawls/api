@@ -241,6 +241,13 @@ object ExperienceEntries : Table("ExperienceEntries") {
     override val primaryKey = PrimaryKey(eventId)
 }
 
+object VoicechatPlayers : Table("VoicechatPlayers") {
+    val playerId = reference(PLAYER_ID_KEY, Players.playerId).index()
+    val firstConnected = timestamp("first_connected").defaultExpression(CurrentTimestamp)
+
+    override val primaryKey = PrimaryKey(playerId)
+}
+
 object LuckPermsPlayers : Table("luckperms_players") {
     val uuid = varchar("uuid", UUID_VARCHAR_LENGTH)
     val username = varchar("username", 16).index()
