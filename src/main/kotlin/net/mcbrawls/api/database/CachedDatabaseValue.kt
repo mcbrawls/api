@@ -57,6 +57,17 @@ class CachedDatabaseValue<T : Any?>(
     }
 
     /**
+     * Modifies the value locally and on the database according to the function provided.
+     * @return the new local value
+     */
+    suspend fun modifyBefore(modifier: ValueModifier<T>, databaseModifier: DatabaseModifier<T>): T {
+        val newValue = modifier.modify(::value)
+        value = newValue
+        databaseModifier.modify(::value)
+        return newValue
+    }
+
+    /**
      * Refreshes the current value from the database.
      */
     suspend fun refresh() {
@@ -78,5 +89,12 @@ class CachedDatabaseValue<T : Any?>(
          * @return the deferred result
          */
         suspend fun select(): T
+    }
+
+    fun interface DatabaseModifier<T> {
+        /**
+         * Modifies the value within the database.
+         */
+        suspend fun modify(currentValue: () -> T)
     }
 }
