@@ -11,17 +11,20 @@ object BrawlsDatabaseFactory {
     /**
      * Loads the configuration from disk.
      */
-    fun createDatabase(schema: String): Database {
+    fun createDatabase(schema: String, builder: HikariConfig.() -> Unit = {}): Database {
         val url = ConnectionConfig.url
-        val config = HikariConfig().apply {
-            jdbcUrl = "jdbc:mysql://$url/$schema"
-            driverClassName = "com.mysql.cj.jdbc.Driver"
-            username = ConnectionConfig.username
-            password = ConnectionConfig.password
-            maximumPoolSize = 10
-        }
+        val config = HikariConfig()
+            .apply {
+                jdbcUrl = "jdbc:mysql://$url/$schema"
+                driverClassName = "com.mysql.cj.jdbc.Driver"
+                username = ConnectionConfig.username
+                password = ConnectionConfig.password
+                maximumPoolSize = 16
+                connectionTimeout = 60 * 1000
+            }.apply(builder)
 
-        return Database.connect(HikariDataSource(config))
+        val source = HikariDataSource(config)
+        return Database.connect(source)
     }
 
     private object ConnectionConfig {
