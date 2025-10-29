@@ -1,5 +1,6 @@
 package net.mcbrawls.api
 
+import kotlinx.coroutines.Dispatchers
 import net.mcbrawls.api.leaderboard.LeaderboardGameType
 import net.mcbrawls.api.leaderboard.LeaderboardType
 import net.mcbrawls.api.leaderboard.LeaderboardTypes
@@ -39,7 +40,7 @@ object StatisticUtils {
         limit: Int?,
         offset: Long?
     ): List<LeaderboardEntry> {
-        return newSuspendedTransaction(db = database) transaction@{
+        return newSuspendedTransaction(Dispatchers.IO, db = database) transaction@{
             buildList {
                 val factory = factorySupplier.invoke(this@transaction)
                 val query = factory.createQuery(limit, offset)

@@ -1,8 +1,8 @@
 @file:Suppress("VulnerableLibrariesLocal", "LocalVariableName")
 
 plugins {
-    kotlin("jvm") version "2.0.0"
-    kotlin("plugin.serialization") version "2.0.0"
+    kotlin("jvm") version "2.2.21"
+    kotlin("plugin.serialization") version "2.2.21"
     `maven-publish`
 }
 
