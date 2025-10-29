@@ -1,28 +1,29 @@
 @file:Suppress("unused")
+@file:OptIn(ExperimentalTime::class)
 
 package net.mcbrawls.api.database.schema
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
-import org.jetbrains.exposed.sql.Op
-import org.jetbrains.exposed.sql.SqlExpressionBuilder
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.insertIgnore
-import org.jetbrains.exposed.sql.json.json
-import org.jetbrains.exposed.sql.kotlin.datetime.CurrentTimestamp
-import org.jetbrains.exposed.sql.kotlin.datetime.date
-import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
-import org.jetbrains.exposed.sql.statements.UpdateBuilder
-import org.jetbrains.exposed.sql.statements.UpdateStatement
-import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.v1.core.Op
+import org.jetbrains.exposed.v1.core.Table
+import org.jetbrains.exposed.v1.core.statements.UpdateBuilder
+import org.jetbrains.exposed.v1.core.statements.UpdateStatement
+import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
+import org.jetbrains.exposed.v1.datetime.date
+import org.jetbrains.exposed.v1.datetime.timestamp
+import org.jetbrains.exposed.v1.jdbc.insertIgnore
+import org.jetbrains.exposed.v1.jdbc.update
+import org.jetbrains.exposed.v1.json.json
+import kotlin.time.ExperimentalTime
 
 private const val PLAYER_ID_KEY = "player_id"
 private const val UUID_VARCHAR_LENGTH = 36
 
 fun <T : Table> T.insertOrUpdate(
     insertBody: T.(UpdateBuilder<*>) -> Unit,
-    updateWhere: (SqlExpressionBuilder.() -> Op<Boolean>)? = null,
+    updateWhere: (() -> Op<Boolean>)? = null,
     updateLimit: Int? = null,
     block: T.(UpdateStatement) -> Unit
 ): Int {

@@ -1,24 +1,30 @@
+@file:OptIn(ExperimentalTime::class)
+
 package net.mcbrawls.api.leaderboard
 
-import kotlinx.datetime.toKotlinInstant
 import net.mcbrawls.api.database.CaseWhenNoElse.Companion.caseNoElse
 import net.mcbrawls.api.database.schema.ExperienceEntries
 import net.mcbrawls.api.database.schema.MasteryQuests
 import net.mcbrawls.api.database.schema.StatisticEvents
 import net.mcbrawls.api.leaderboard.LeaderboardType.LeaderboardQueryFactory
 import net.mcbrawls.api.registry.BasicRegistry
-import org.jetbrains.exposed.sql.Count
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.coalesce
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.div
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.times
-import org.jetbrains.exposed.sql.Transaction
-import org.jetbrains.exposed.sql.alias
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.intLiteral
-import org.jetbrains.exposed.sql.sum
+import org.jetbrains.exposed.v1.core.Count
+import org.jetbrains.exposed.v1.core.Transaction
+import org.jetbrains.exposed.v1.core.alias
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.between
+import org.jetbrains.exposed.v1.core.coalesce
+import org.jetbrains.exposed.v1.core.div
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.core.greater
+import org.jetbrains.exposed.v1.core.intLiteral
+import org.jetbrains.exposed.v1.core.sum
+import org.jetbrains.exposed.v1.core.times
+import org.jetbrains.exposed.v1.jdbc.select
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import kotlin.time.ExperimentalTime
+import kotlin.time.toKotlinInstant
 
 object LeaderboardTypes : BasicRegistry<LeaderboardType>() {
     val TOTAL_EXPERIENCE = register(

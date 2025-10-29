@@ -4,10 +4,11 @@ import kotlinx.serialization.Serializable
 import net.mcbrawls.api.database.schema.ExperienceEntries
 import net.mcbrawls.api.database.schema.StatisticEvents
 import net.mcbrawls.api.leaderboard.LeaderboardType.LeaderboardQueryFactory
-import org.jetbrains.exposed.sql.Transaction
-import org.jetbrains.exposed.sql.alias
-import org.jetbrains.exposed.sql.count
-import org.jetbrains.exposed.sql.sum
+import org.jetbrains.exposed.v1.core.Transaction
+import org.jetbrains.exposed.v1.core.alias
+import org.jetbrains.exposed.v1.core.count
+import org.jetbrains.exposed.v1.core.sum
+import org.jetbrains.exposed.v1.jdbc.select
 
 @Serializable
 enum class LeaderboardValueType(

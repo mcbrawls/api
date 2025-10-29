@@ -1,8 +1,8 @@
 @file:Suppress("VulnerableLibrariesLocal", "LocalVariableName")
 
 plugins {
-    kotlin("jvm") version "2.2.21"
-    kotlin("plugin.serialization") version "2.2.21"
+    kotlin("jvm")
+    kotlin("plugin.serialization")
     `maven-publish`
 }
 
@@ -18,10 +18,11 @@ repositories {
 }
 
 dependencies {
-    val ktor_version = property("ktor_version")
-    val exposed_version = property("exposed_version")
-    val hikari_version = property("hikari_version")
-    val ktor_swagger_version = property("ktor_swagger_version")
+    val kotlin_version by properties
+    val ktor_version by properties
+    val exposed_version by properties
+    val hikari_version by properties
+    val ktor_swagger_version by properties
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
@@ -33,7 +34,7 @@ dependencies {
     implementation("com.mysql:mysql-connector-j:8.3.0")
     implementation("org.slf4j:slf4j-simple:2.0.12")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")

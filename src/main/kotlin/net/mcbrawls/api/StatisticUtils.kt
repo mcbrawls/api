@@ -7,9 +7,9 @@ import net.mcbrawls.api.leaderboard.LeaderboardTypes
 import net.mcbrawls.api.leaderboard.LeaderboardValueType
 import net.mcbrawls.api.response.Leaderboard
 import net.mcbrawls.api.response.LeaderboardEntry
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.Transaction
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.v1.core.Transaction
+import org.jetbrains.exposed.v1.jdbc.Database
+import org.jetbrains.exposed.v1.jdbc.transactions.experimental.newSuspendedTransaction
 import java.util.UUID
 
 object StatisticUtils {

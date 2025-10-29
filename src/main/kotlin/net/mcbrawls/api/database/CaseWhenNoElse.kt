@@ -1,9 +1,9 @@
 package net.mcbrawls.api.database
 
-import org.jetbrains.exposed.sql.ComplexExpression
-import org.jetbrains.exposed.sql.Expression
-import org.jetbrains.exposed.sql.QueryBuilder
-import org.jetbrains.exposed.sql.append
+import org.jetbrains.exposed.v1.core.ComplexExpression
+import org.jetbrains.exposed.v1.core.Expression
+import org.jetbrains.exposed.v1.core.QueryBuilder
+import org.jetbrains.exposed.v1.core.append
 
 class CaseWhenNoElse<T> : Expression<T>(), ComplexExpression {
     /**

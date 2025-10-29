@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalTime::class)
+
 package net.mcbrawls.api.response
 
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import net.mcbrawls.api.SerializableUUID
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @Serializable
 data class Session(

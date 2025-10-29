@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package net.mcbrawls.api
 
 import io.github.smiley4.ktorswaggerui.SwaggerUI
@@ -43,18 +45,22 @@ import net.mcbrawls.api.response.PartnershipResponse
 import net.mcbrawls.api.response.Profile
 import net.mcbrawls.api.response.Rank
 import net.mcbrawls.api.response.Session
-import org.jetbrains.exposed.sql.SortOrder
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.alias
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.count
-import org.jetbrains.exposed.sql.leftJoin
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.sum
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.v1.core.SortOrder
+import org.jetbrains.exposed.v1.core.alias
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.count
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.core.greaterEq
+import org.jetbrains.exposed.v1.core.leftJoin
+import org.jetbrains.exposed.v1.core.lessEq
+import org.jetbrains.exposed.v1.core.sum
+import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.UUID
+import kotlin.time.ExperimentalTime
 
 /**
  * TODO cache fetched data ([CachedDatabaseValue])
@@ -163,8 +169,7 @@ fun main(args: Array<String>) {
                         }
                     }) {
                         val (localMessageCount, filteredMessageCount) = transaction(database) {
-                            val localExpression =
-                                (ChatLogs.chatMode eq DbChatMode.LOCAL) and (ChatLogs.chatResult eq ChatResult.SUCCESS)
+                            val localExpression = (ChatLogs.chatMode eq DbChatMode.LOCAL) and (ChatLogs.chatResult eq ChatResult.SUCCESS)
                             val filteredExpression = ChatLogs.chatResult eq ChatResult.FILTERED_PROFANITY
 
                             val localMessageCount = ChatLogs.select(ChatLogs.logId).where(localExpression).count()
