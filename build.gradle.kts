@@ -73,7 +73,7 @@ val fatJar = tasks.register("fatJar", type = Jar::class) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     manifest {
-        attributes["Main-Class"] = "net.mcbrawls.api.MainKt"
+        attributes["Main-Class"] = "net.mcbrawls.api.Main"
     }
 
     // Include all dependencies, including transitive ones, from runtimeClasspath
