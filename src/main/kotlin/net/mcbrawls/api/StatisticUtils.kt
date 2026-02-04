@@ -1,15 +1,14 @@
 package net.mcbrawls.api
 
-import kotlinx.coroutines.Dispatchers
 import net.mcbrawls.api.leaderboard.LeaderboardGameType
 import net.mcbrawls.api.leaderboard.LeaderboardType
 import net.mcbrawls.api.leaderboard.LeaderboardTypes
 import net.mcbrawls.api.leaderboard.LeaderboardValueType
 import net.mcbrawls.api.response.Leaderboard
 import net.mcbrawls.api.response.LeaderboardEntry
-import org.jetbrains.exposed.v1.core.Transaction
 import org.jetbrains.exposed.v1.jdbc.Database
-import org.jetbrains.exposed.v1.jdbc.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.v1.jdbc.JdbcTransaction
+import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 import java.util.UUID
 
 object StatisticUtils {
@@ -36,11 +35,11 @@ object StatisticUtils {
 
     suspend fun createLeaderboardEntries(
         database: Database,
-        factorySupplier: Transaction.() -> LeaderboardType.LeaderboardQueryFactory,
+        factorySupplier: suspend JdbcTransaction.() -> LeaderboardType.LeaderboardQueryFactory,
         limit: Int?,
         offset: Long?
     ): List<LeaderboardEntry> {
-        return newSuspendedTransaction(Dispatchers.IO, db = database) transaction@{
+        return suspendTransaction(database, statement = transaction@{
             buildList {
                 val factory = factorySupplier.invoke(this@transaction)
                 val query = factory.createQuery(limit, offset)
@@ -52,6 +51,6 @@ object StatisticUtils {
                     add(LeaderboardEntry(uuid, index + 1, value.toLong()))
                 }
             }
-        }
+        })
     }
 }

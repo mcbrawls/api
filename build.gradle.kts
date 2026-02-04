@@ -18,7 +18,6 @@ repositories {
 }
 
 dependencies {
-    val kotlin_version by properties
     val ktor_version by properties
     val exposed_version by properties
     val hikari_version by properties
@@ -37,6 +36,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-r2dbc:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-json:$exposed_version")
@@ -67,7 +67,7 @@ java {
     withJavadocJar()
 }
 
-val fatJar = task("fatJar", type = Jar::class) {
+val fatJar = tasks.register("fatJar", type = Jar::class) {
     archiveBaseName = "${project.name}-fat"
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -97,15 +97,14 @@ publishing {
     }
 
     repositories {
-        val env = System.getenv()
-        val envUsername = env["MAVEN_USERNAME_ANDANTE"]
-        val envPassword = env["MAVEN_PASSWORD_ANDANTE"]
-        if (envUsername != null && envPassword != null) {
+        val mavenUrl = System.getenv("MAVEN_URL")
+        if (mavenUrl != null) {
             maven {
-                url = uri("https://maven.mcbrawls.net/releases/")
+                name = "envmaven"
+                url = uri(mavenUrl)
                 credentials {
-                    username = envUsername
-                    password = envPassword
+                    username = System.getenv("MAVEN_USERNAME")
+                    password = System.getenv("MAVEN_PASSWORD")
                 }
             }
         }
