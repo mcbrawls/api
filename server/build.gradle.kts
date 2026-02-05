@@ -17,6 +17,10 @@ dependencies {
     api("com.mysql:mysql-connector-j:9.6.0")
 }
 
+tasks.withType<PublishToMavenRepository> {
+    enabled = false
+}
+
 val fatJar = tasks.register("fatJar", type = Jar::class) {
     archiveBaseName = "${project.name}-fat"
 
