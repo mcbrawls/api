@@ -14,3 +14,9 @@ plugins {
 }
 
 rootProject.name = "brawls-api"
+
+include(
+    "core",
+    "database",
+    "server",
+)
