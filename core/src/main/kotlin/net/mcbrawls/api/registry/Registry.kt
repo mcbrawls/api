@@ -3,6 +3,7 @@ package net.mcbrawls.api.registry
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import com.mojang.serialization.Codec
+import com.mojang.serialization.DataResult
 import java.util.concurrent.CompletableFuture
 import java.util.function.BiConsumer
 import java.util.function.Consumer
@@ -11,7 +12,7 @@ import kotlin.random.Random
 /**
  * A basic string-object registry.
  */
-open class BasicRegistry<T : Any> {
+open class Registry<T : Any> {
     private val entries = mutableListOf<T>()
     private val keys = mutableListOf<String>()
     private val keyToEntryMap = mutableMapOf<String, T>()
@@ -30,7 +31,16 @@ open class BasicRegistry<T : Any> {
     /**
      * The codec for this registry.
      */
-    val codec: Codec<T> = Codec.STRING.xmap(::get, ::get)
+    val codec: Codec<T> = Codec.STRING.flatXmap(
+        { id ->
+            val entry = this[id]
+            entry?.let(DataResult<T>::success) ?: DataResult.error { "Key not in registry: $id" }
+        },
+        { entry ->
+            val id = this[entry]
+            id?.let(DataResult<String>::success) ?: DataResult.error { "Object not in registry: $entry" }
+        },
+    )
 
     /**
      * Registers [entry] to the registry under [key].

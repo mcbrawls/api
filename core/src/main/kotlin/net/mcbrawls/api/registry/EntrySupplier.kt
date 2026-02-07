@@ -3,7 +3,7 @@ package net.mcbrawls.api.registry
 /**
  * An object holdable in a registry that caches a supplied object.
  */
-class RegistryEntrySupplier<T : Any>(
+class EntrySupplier<T : Any>(
     /**
      * The factory to create this object.
      */
@@ -32,15 +32,15 @@ class RegistryEntrySupplier<T : Any>(
         /**
          * Refreshes all entries in this registry.
          */
-        fun <T : Any> BasicRegistry<RegistryEntrySupplier<T>>.refreshEntries() {
-            forEach(RegistryEntrySupplier<T>::refreshEntry)
+        fun <T : Any> Registry<EntrySupplier<T>>.refreshEntries() {
+            forEach(EntrySupplier<T>::refreshEntry)
         }
 
         /**
          * Returns the entry inside of the supplier assigned to [key].
          * @return a registry entry
          */
-        fun <T : Any> BasicRegistry<RegistryEntrySupplier<T>>.getEntry(key: String) : T? {
+        fun <T : Any> Registry<EntrySupplier<T>>.getEntry(key: String) : T? {
             return this[key]?._entry
         }
     }

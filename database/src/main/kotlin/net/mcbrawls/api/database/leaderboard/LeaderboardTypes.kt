@@ -7,7 +7,7 @@ import net.mcbrawls.api.database.schema.ExperienceEntries
 import net.mcbrawls.api.database.schema.MasteryQuests
 import net.mcbrawls.api.database.schema.StatisticEvents
 import net.mcbrawls.api.database.leaderboard.LeaderboardType.LeaderboardQueryFactory
-import net.mcbrawls.api.registry.BasicRegistry
+import net.mcbrawls.api.registry.Registry
 import org.jetbrains.exposed.v1.core.Count
 import org.jetbrains.exposed.v1.core.Transaction
 import org.jetbrains.exposed.v1.core.alias
@@ -26,7 +26,7 @@ import java.time.ZoneOffset
 import kotlin.time.ExperimentalTime
 import kotlin.time.toKotlinInstant
 
-object LeaderboardTypes : BasicRegistry<LeaderboardType>() {
+object LeaderboardTypes : Registry<LeaderboardType>() {
     val TOTAL_EXPERIENCE = register(
         "total_experience",
         LeaderboardType("Total Experience Leaderboard") {
